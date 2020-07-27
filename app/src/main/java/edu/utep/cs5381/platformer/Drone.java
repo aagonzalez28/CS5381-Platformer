@@ -1,6 +1,5 @@
 package edu.utep.cs5381.platformer;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 
 public class Drone extends GameObject {
@@ -10,6 +9,7 @@ public class Drone extends GameObject {
 
     final float MAX_X_VELOCITY = 3;
     final float MAX_Y_VELOCITY = 3;
+    private PointF waypoint;
 
 
     Drone(float worldStartX, float worldStartY, char type) {
@@ -67,7 +67,7 @@ public class Drone extends GameObject {
     }
 
     public void setWaypoint(Vector2Point5D playerLocation) {
-        if (System.currentTimeMillis() > lastWaypointSetTime + 2000) {//Has 2 seconds passed
+        if (System.currentTimeMillis() > lastWaypointSetTime + 3000) {//Has 2 seconds passed
             lastWaypointSetTime = System.currentTimeMillis();
             currentWaypoint.x = playerLocation.x;
             currentWaypoint.y = playerLocation.y;

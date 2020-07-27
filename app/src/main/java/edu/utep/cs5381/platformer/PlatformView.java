@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class PlatformView extends SurfaceView implements Runnable {
 
-    private boolean debugging = true;
+    private boolean debugging = false;
     private volatile boolean running;
     private Thread gameThread = null;
 
@@ -57,7 +57,10 @@ public class PlatformView extends SurfaceView implements Runnable {
         sm.loadSound(context);
         ps = new PlayerState();
 
-        loadLevel("LevelCave", 10, 2);
+        //loadLevel("LevelMountain", 118, 17);
+        //loadLevel("LevelForest", 1, 17);
+        //loadLevel("LevelCity", 118, 18);
+        loadLevel("LevelCave", 1, 16);
 
     }
 
@@ -74,6 +77,9 @@ public class PlatformView extends SurfaceView implements Runnable {
 
         PointF location = new PointF(px, py);
         ps.saveLocation(location);
+		
+		// Reload the players current fire rate from the player state
+        lm.player.bfg.setFireRate(ps.getFireRate());
 
         //set the players location as the world centre of the viewport
         vp.setWorldCentre(lm.gameObjects.get(lm.playerIndex)
@@ -175,6 +181,22 @@ public class PlatformView extends SurfaceView implements Runnable {
                                 lm.player.setxVelocity(0);
                                 break;
 
+                            case 'f':
+                                sm.playSound("player_burn");
+                                ps.loseLife();
+                                location = new PointF(ps.loadLocation().x, ps.loadLocation().y);
+                                lm.player.setWorldLocationX(location.x);
+                                lm.player.setWorldLocationY(location.y);
+                                lm.player.setxVelocity(0);
+                                break;
+
+                            case 't':
+                                Teleport teleport = (Teleport) go;
+                                Location t = teleport.getTarget();
+                                loadLevel(t.level, t.x, t.y);
+                                sm.playSound("teleport");
+                                break;
+
                             default:// Probably a regular tile
                                 if (hit == 1) {// Left or right
                                     lm.player.setxVelocity(0);
@@ -184,10 +206,39 @@ public class PlatformView extends SurfaceView implements Runnable {
                                 if (hit == 2) {// Feet
                                     lm.player.isFalling = false;
                                 }
-
-
                                 break;
+                        }
+                    }
 
+                    //Check bullet collisions
+                    for (int i = 0; i < lm.player.bfg.getNumBullets(); i++) {
+                        //Make a hitbox out of the the current bullet
+                        RectHitbox r = new RectHitbox();
+                        r.setLeft(lm.player.bfg.getBulletX(i));
+                        r.setTop(lm.player.bfg.getBulletY(i));
+                        r.setRight(lm.player.bfg.getBulletX(i) + .1f);
+                        r.setBottom(lm.player.bfg.getBulletY(i) + .1f);
+
+                        if (go.getHitbox().intersects(r)) {
+                            //collision detected
+                            //make bullet disappear until it is respawned as a new bullet
+                            lm.player.bfg.hideBullet(i);
+
+                            //Now respond depending upon the type of object hit
+                            if (go.getType() != 'g'
+                                    && go.getType() != 'd') {
+
+                                sm.playSound("ricochet");
+                            } else if (go.getType() == 'g') {
+                                // Knock the guard back
+                                go.setWorldLocationX(go.getWorldLocation().x + 2 * (lm.player.bfg.getDirection(i)));
+                                sm.playSound("hit_guard");
+                            } else if (go.getType() == 'd') {
+                                //destroy the droid
+                                sm.playSound("explode");
+                                //permanently clip this drone
+                                go.setWorldLocation(-100, -100, 0);
+                            }
                         }
                     }
 
@@ -207,7 +258,6 @@ public class PlatformView extends SurfaceView implements Runnable {
                     // Now draw() can ignore them
                 }
             }
-
         }
 
 
@@ -218,12 +268,79 @@ public class PlatformView extends SurfaceView implements Runnable {
                             .getWorldLocation().x,
                     lm.gameObjects.get(lm.playerIndex)
                             .getWorldLocation().y);
+
+            //Has player fallen out of the map?
+            if (lm.player.getWorldLocation().x < 0 ||
+                    lm.player.getWorldLocation().x > lm.mapWidth ||
+                    lm.player.getWorldLocation().y > lm.mapHeight) {
+
+                sm.playSound("player_burn");
+                ps.loseLife();
+                PointF location = new PointF(ps.loadLocation().x, ps.loadLocation().y);
+                lm.player.setWorldLocationX(location.x);
+                lm.player.setWorldLocationY(location.y);
+                lm.player.setxVelocity(0);
+            }
+
+            // Check if game is over
+            if (ps.getLives() == 0) {
+                ps = new PlayerState();
+                loadLevel("LevelCave", 1, 16);
+            }
         }
+    }
 
+    private void drawBackground(int start, int stop) {
 
+        Rect fromRect1 = new Rect();
+        Rect toRect1 = new Rect();
+        Rect fromRect2 = new Rect();
+        Rect toRect2 = new Rect();
 
+        for (Background bg : lm.backgrounds) {
 
+            if (bg.z < start && bg.z > stop) {
+                // Is this layer in the viewport?
+                // Clip anything off-screen
+                if (!vp.clipObjects(-1, bg.y, 1000, bg.height)) {
+
+                    float floatstartY = ((vp.getyCentre() - ((vp.getViewportWorldCentreY() - bg.y) * vp.getPixelsPerMetreY())));
+                    int startY = (int) floatstartY;
+
+                    float floatendY = ((vp.getyCentre() - ((vp.getViewportWorldCentreY() - bg.endY) * vp.getPixelsPerMetreY())));
+                    int endY = (int) floatendY;
+
+                    //define what portion of bitmaps to capture and what coordinates to draw them at
+                    fromRect1 = new Rect(0, 0, bg.width - bg.xClip, bg.height);
+                    toRect1 = new Rect(bg.xClip, startY, bg.width, endY);
+
+                    fromRect2 = new Rect(bg.width - bg.xClip, 0, bg.width, bg.height);
+                    toRect2 = new Rect(0, startY, bg.xClip, endY);
+                }
+
+                //draw backgrounds
+                if (!bg.reversedFirst) {
+                    
+                    canvas.drawBitmap(bg.bitmap, fromRect1, toRect1, paint);
+                    canvas.drawBitmap(bg.bitmapReversed, fromRect2, toRect2, paint);
+                } else {
+                    canvas.drawBitmap(bg.bitmap, fromRect2, toRect2, paint);
+                    canvas.drawBitmap(bg.bitmapReversed, fromRect1, toRect1, paint);
+                }
+
+                
+                bg.xClip -= lm.player.getxVelocity() / (20 / bg.speed);
+                if (bg.xClip >= bg.width) {
+                    bg.xClip = 0;
+                    bg.reversedFirst = !bg.reversedFirst;
+                } else if (bg.xClip <= 0) {
+                    bg.xClip = bg.width;
+                    bg.reversedFirst = !bg.reversedFirst;
+
+                }
+            }
         }
+    }
 
     private void draw() {
 
@@ -232,8 +349,11 @@ public class PlatformView extends SurfaceView implements Runnable {
             canvas = ourHolder.lockCanvas();
 
             // Rub out the last frame with arbitrary color
-            paint.setColor(Color.argb(255, 0, 0, 255));
-            canvas.drawColor(Color.argb(255, 0, 0, 255));
+            paint.setColor(Color.argb(255, 0, 0, 0));
+            canvas.drawColor(Color.argb(255, 0, 0, 0));
+
+            //draw parallax backgrounds from -1 to -3
+            drawBackground(0, -3);
 
             // Draw all the GameObjects
             Rect toScreen2d = new Rect();
@@ -289,7 +409,6 @@ public class PlatformView extends SurfaceView implements Runnable {
                 }
             }
 
-
             //draw the bullets
             paint.setColor(Color.argb(255, 255, 255, 255));
             for (int i = 0; i < lm.player.bfg.getNumBullets(); i++) {
@@ -304,6 +423,35 @@ public class PlatformView extends SurfaceView implements Runnable {
 
                 canvas.drawRect(toScreen2d, paint);
             }
+
+            // Draw parallax backgrounds from layer 1 to 3
+            drawBackground(4, 0);
+
+            // Draw the HUD
+            // This code relies on the bitmaps from the extra life, upgrade and coin
+            // Therefore there must be at least one of each in the level
+            int topSpace = vp.getPixelsPerMetreY() / 4;
+            int iconSize = vp.getPixelsPerMetreX();
+            int padding = vp.getPixelsPerMetreX() / 5;
+            int centring = vp.getPixelsPerMetreY() / 6;
+            paint.setTextSize(vp.getPixelsPerMetreY()/2);
+            paint.setTextAlign(Paint.Align.CENTER);
+
+            paint.setColor(Color.argb(100, 0, 0, 0));
+            canvas.drawRect(0,0,iconSize * 7.0f, topSpace*2 + iconSize,paint);
+            paint.setColor(Color.argb(255, 255, 255, 0));
+
+            canvas.drawBitmap(lm.getBitmap('e'), 0, topSpace, paint);
+
+            canvas.drawText("" + ps.getLives(), (iconSize * 1) + padding, (iconSize) - centring, paint);
+
+            canvas.drawBitmap(lm.getBitmap('c'), (iconSize * 2.5f) + padding, topSpace, paint);
+
+            canvas.drawText("" + ps.getCredits(), (iconSize * 3.5f) + padding * 2, (iconSize) - centring, paint);
+
+            canvas.drawBitmap(lm.getBitmap('u'), (iconSize * 5.0f) + padding, topSpace, paint);
+
+            canvas.drawText("" + ps.getFireRate(), (iconSize * 6.0f) + padding * 2, (iconSize) - centring, paint);
 
             // Text for debugging
             if (debugging) {

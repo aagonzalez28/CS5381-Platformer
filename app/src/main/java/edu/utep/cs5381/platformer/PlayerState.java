@@ -38,9 +38,8 @@ public class PlayerState {
     }
 	
 	public void increaseFireRate(){
-		mgFireRate += 2;
-	}
-
+        mgFireRate += 2;
+    }
 
     public void gotCredit(){
         numCredits ++;

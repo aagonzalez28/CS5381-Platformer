@@ -34,6 +34,7 @@ public class MachineGun extends GameObject{
 		rateOfFire = rate;
 	}
 
+
     public int getNumBullets(){
         //tell the view how many bullets there are
         return numBullets;

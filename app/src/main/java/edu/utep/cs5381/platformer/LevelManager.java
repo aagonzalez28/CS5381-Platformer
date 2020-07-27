@@ -21,6 +21,7 @@ public class LevelManager {
 
     LevelData levelData;
     ArrayList<GameObject> gameObjects;
+    ArrayList<Background> backgrounds;
 
     ArrayList<Rect> currentButtons;
     Bitmap[] bitmapsArray;
@@ -34,6 +35,17 @@ public class LevelManager {
                 break;
 
             // We can add extra levels here
+            case "LevelCity":
+                levelData = new LevelCity();
+                break;
+
+            case "LevelForest":
+                levelData = new LevelForest();
+                break;
+
+            case "LevelMountain":
+                levelData = new LevelMountain();
+                break;
 
         }
 
@@ -45,11 +57,22 @@ public class LevelManager {
 
         // Load all the GameObjects and Bitmaps
         loadMapData(context, pixelsPerMetre, px, py);
+        loadBackgrounds(context, pixelsPerMetre, screenWidth);
 
         // Set waypoints for our guards
         setWaypoints();
 
         //playing = true;
+    }
+
+    private void loadBackgrounds(Context context, int pixelsPerMetre, int screenWidth) {
+        backgrounds = new ArrayList<Background>();
+        //load the background data into the Background objects and
+        // place them in our GameObject arraylist
+        for (BackgroundData bgData : levelData.backgroundDataList) {
+            backgrounds.add(new Background(context, pixelsPerMetre, screenWidth, bgData));
+        }
+
     }
 
     public void setWaypoints() {
@@ -171,6 +194,66 @@ public class LevelManager {
                 index = 7;
                 break;
 
+            case 'f':
+                index = 8;
+                break;
+
+            case '2':
+                index = 9;
+                break;
+
+            case '3':
+                index = 10;
+                break;
+
+            case '4':
+                index = 11;
+                break;
+
+            case '5':
+                index = 12;
+                break;
+
+            case '6':
+                index = 13;
+                break;
+
+            case '7':
+                index = 14;
+                break;
+
+            case 'w':
+                index = 15;
+                break;
+
+            case 'x':
+                index = 16;
+                break;
+
+            case 'l':
+                index = 17;
+                break;
+
+            case 'r':
+                index = 18;
+                break;
+
+            case 's':
+                index = 19;
+                break;
+
+            case 'm':
+                index = 20;
+                break;
+
+            case 'z':
+                index = 21;
+                break;
+
+            case 't':
+                index = 22;
+                break;
+
             default:
                 index = 0;
                 break;
@@ -193,6 +276,7 @@ public class LevelManager {
             case '1':
                 index = 1;
                 break;
+
 
             case 'p':
                 index = 2;
@@ -218,6 +302,66 @@ public class LevelManager {
                 index = 7;
                 break;
 
+            case 'f':
+                index = 8;
+                break;
+
+            case '2':
+                index = 9;
+                break;
+
+            case '3':
+                index = 10;
+                break;
+
+            case '4':
+                index = 11;
+                break;
+
+            case '5':
+                index = 12;
+                break;
+
+            case '6':
+                index = 13;
+                break;
+
+            case '7':
+                index = 14;
+                break;
+
+            case 'w':
+                index = 15;
+                break;
+
+            case 'x':
+                index = 16;
+                break;
+
+            case 'l':
+                index = 17;
+                break;
+
+            case 'r':
+                index = 18;
+                break;
+
+            case 's':
+                index = 19;
+                break;
+
+            case 'm':
+                index = 20;
+                break;
+
+            case 'z':
+                index = 21;
+                break;
+
+            case 't':
+                index = 22;
+                break;
+
             default:
                 index = 0;
                 break;
@@ -234,7 +378,7 @@ public class LevelManager {
 
         //Keep track of where we load our game objects
         int currentIndex = -1;
-
+        int teleportIndex = -1;
         // how wide and high is the map? Viewport needs to know
         mapHeight = levelData.tiles.size();
         mapWidth = levelData.tiles.get(0).length();
@@ -251,6 +395,8 @@ public class LevelManager {
                             // Add a tile to the gameObjects
                             gameObjects.add(new Grass(j, i, c));
                             break;
+
+
 
                         case 'p':// a player
                             // Add a player to the gameObjects
@@ -287,6 +433,82 @@ public class LevelManager {
                         case 'g':
                             // Add a guard to the gameObjects
                             gameObjects.add(new Guard(context, j, i, c, pixelsPerMetre));
+                            break;
+
+                        case 'f':
+                            // Add a fire tile the gameObjects
+                            gameObjects.add(new Fire(context, j, i, c, pixelsPerMetre));
+                            break;
+
+                        case '2':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Snow(j, i, c));
+                            break;
+
+                        case '3':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Brick(j, i, c));
+                            break;
+
+                        case '4':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Coal(j, i, c));
+                            break;
+
+                        case '5':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Concrete(j, i, c));
+                            break;
+
+                        case '6':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Scorched(j, i, c));
+                            break;
+
+                        case '7':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Stone(j, i, c));
+                            break;
+
+                        case 'w':
+                            // Add a tree to the gameObjects
+                            gameObjects.add(new Tree(j, i, c));
+                            break;
+
+                        case 'x':
+                            // Add a tree2 to the gameObjects
+                            gameObjects.add(new Tree2(j, i, c));
+                            break;
+
+                        case 'l':
+                            // Add a tree to the gameObjects
+                            gameObjects.add(new Lampost(j, i, c));
+                            break;
+
+                        case 'r':
+                            // Add a stalactite to the gameObjects
+                            gameObjects.add(new Stalactite(j, i, c));
+                            break;
+
+                        case 's':
+                            // Add a stalagmite to the gameObjects
+                            gameObjects.add(new Stalagmite(j, i, c));
+                            break;
+
+                        case 'm':
+                            // Add a cart to the gameObjects
+                            gameObjects.add(new Cart(j, i, c));
+                            break;
+
+                        case 'z':
+                            // Add a boulders to the gameObjects
+                            gameObjects.add(new Boulders(j, i, c));
+                            break;
+
+                        case 't':
+                            // Add a teleport to the gameObjects
+                            teleportIndex++;
+                            gameObjects.add(new Teleport(j, i, c, levelData.locations.get(teleportIndex)));
                             break;
 
 

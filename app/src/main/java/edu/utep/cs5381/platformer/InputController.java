@@ -2,6 +2,7 @@ package edu.utep.cs5381.platformer;
 
 import android.graphics.Rect;
 import android.view.MotionEvent;
+
 import java.util.ArrayList;
 
 public class InputController {
@@ -136,8 +137,19 @@ public class InputController {
                 switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
                     case MotionEvent.ACTION_DOWN:
-
-                        if (pause.contains(x, y)) {
+                        if (right.contains(x, y)) {
+                            vp.moveViewportRight(l.mapWidth);
+                            //Log.w("right:", "DOWN" );
+                        } else if (left.contains(x, y)) {
+                            vp.moveViewportLeft();
+                            //Log.w("left:", "DOWN" );
+                        } else if (jump.contains(x, y)) {
+                            vp.moveViewportUp();
+                            //Log.w("jump:", "DOWN" );/
+                        } else if (shoot.contains(x, y)) {
+                            vp.moveViewportDown(l.mapHeight);
+                            //Log.w("shoot:", "DOWN" );/
+                        } else if (pause.contains(x, y)) {
                             l.switchPlayingStatus();
                             //Log.w("pause:", "DOWN" );
                         }
