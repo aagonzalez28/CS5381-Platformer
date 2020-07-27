@@ -140,6 +140,8 @@ public class LevelManager {
                 }
             }
         }
+
+        //Moving Tiles
         for (GameObject mtile : this.gameObjects) {
             if (mtile.getType() == 'h') {
                 // Set waypoints for this guard
@@ -317,9 +319,14 @@ public class LevelManager {
                 index = 22;
                 break;
 
-                //moving Tile
+            //moving Tile
             case 'h':
                 index = 23;
+                break;
+
+            //Vaporize tile
+            case 'v':
+                index = 24;/////////////////////////////////////////////////////////////
                 break;
 
             default:
@@ -435,6 +442,11 @@ public class LevelManager {
                 index = 23;
                 break;
 
+            //Vaporize tile
+            case 'v':
+                index = 24;///////////////////////////////////////////////////////////////////
+                break;
+
             default:
                 index = 0;
                 break;
@@ -468,8 +480,6 @@ public class LevelManager {
                             // Add a tile to the gameObjects
                             gameObjects.add(new Grass(j, i, c));
                             break;
-
-
 
                         case 'p':// a player
                             // Add a player to the gameObjects
@@ -546,6 +556,11 @@ public class LevelManager {
                         case '7':
                             // Add a tile to the gameObjects
                             gameObjects.add(new Stone(j, i, c));
+                            break;
+
+                        case 'v':
+                            // Add a destructive tile to the gameObjects
+                            gameObjects.add(new Concrete(j, i, c));///////////////////////////////////////////////////////
                             break;
 
                         case 'w':

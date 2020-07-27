@@ -4,11 +4,11 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 
-public class LevelMountain extends LevelData{
+public class LevelDesert extends LevelData{
 
     //A level with one fixed parallax background
 
-    LevelMountain() {
+    LevelDesert() {
         tiles = new ArrayList<String>();
         this.tiles.add("p................................................................................................2222222222222..........");
         this.tiles.add("........................................................................................................................");

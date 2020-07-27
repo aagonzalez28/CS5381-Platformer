@@ -11,7 +11,7 @@ public class movingTile extends GameObject{
     private int currentWaypoint;
     final float MAX_X_VELOCITY = 3;
 
-
+    //Moving Tile
     movingTile(Context context, float worldStartX, float worldStartY, char type, int pixelsPerMetre) {
         final int ANIMATION_FPS = 8;
         final int ANIMATION_FRAME_COUNT = 5;

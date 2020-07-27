@@ -227,7 +227,7 @@ public class PlatformView extends SurfaceView implements Runnable {
 
                             //Now respond depending upon the type of object hit
                             if (go.getType() != 'g'
-                                    && go.getType() != 'd') {
+                                    && go.getType() != 'd' && go.getType() != 'v') {
 
                                 sm.playSound("ricochet");
                             } else if (go.getType() == 'g') {
@@ -238,6 +238,13 @@ public class PlatformView extends SurfaceView implements Runnable {
                                 //destroy the droid
                                 sm.playSound("explode");
                                 //permanently clip this drone
+                                go.setWorldLocation(-100, -100, 0);
+                            }
+                            //Destroy the tile
+                            else if (go.getType() == 'v') {
+
+                                sm.playSound("explode");
+                                //permanently clip this tile
                                 go.setWorldLocation(-100, -100, 0);
                             }
                         }
