@@ -140,6 +140,69 @@ public class LevelManager {
                 }
             }
         }
+        for (GameObject mtile : this.gameObjects) {
+            if (mtile.getType() == 'h') {
+                // Set waypoints for this guard
+                // find the tile beneath the guard
+                // this relies on the designer putting the guard in sensible location
+
+                int startTileIndex = -1;
+                int startGuardIndex = 0;
+                float waypointX1 = -1;
+                float waypointX2 = -1;
+                //Log.d("yay","found a guard");
+                //Log.d("before fors x1 = ", "" + waypointX1);
+                //Log.d("before fors x2 = ", "" + waypointX2);
+
+                for (GameObject tile : this.gameObjects) {
+                    startTileIndex++;
+                    if (tile.getWorldLocation().y == mtile.getWorldLocation().y + 2) {
+                        //tile is two space below current guard
+                        // Now see if has same x coordinate
+                        if (tile.getWorldLocation().x == mtile.getWorldLocation().x) {
+
+                            // Found the tile the guard is "standing" on
+                            // Now go left as far as possible before non travers-able tile is found
+                            // Either on guards row or tile row
+                            // upto a maximum of 5 tiles. (5 is arbitrary value)
+                            for (int i = 0; i < 5; i++) {// left for loop
+
+                                if (!gameObjects.get(startTileIndex - i).isTraversable()) {
+                                    //set the left waypoint
+                                    waypointX1 = gameObjects.get(startTileIndex - (i + 1)).getWorldLocation().x;
+                                    Log.d("set x1 = ", "" + waypointX1);
+                                    break;// Leave left for loop
+
+                                } else {
+                                    //set to max 5 tiles as no non traversible tile found
+                                    waypointX1 = gameObjects.get(startTileIndex - 5).getWorldLocation().x;
+                                }
+                            }// end get left waypoint
+
+                            for (int i = 0; i < 5; i++) {// right for loop
+                                if (!gameObjects.get(startTileIndex + i).isTraversable()) {
+                                    //set the right waypoint
+
+                                    waypointX2 = gameObjects.get(startTileIndex + (i - 1)).getWorldLocation().x;
+                                    //Log.d("set x2 = ", "" + waypointX2);
+                                    break;// Leave right for loop
+
+                                } else {
+                                    //set to max 5 tiles away
+                                    waypointX2 = gameObjects.get(startTileIndex + 5).getWorldLocation().x;
+                                }
+
+                            }// end get right waypoint
+                            movingTile h = (movingTile) mtile;
+
+                            h.setWaypoints(waypointX1, waypointX2);
+                            //Log.d("after fors x1 = ", "" + waypointX1);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     public void switchPlayingStatus() {
@@ -254,6 +317,11 @@ public class LevelManager {
                 index = 22;
                 break;
 
+                //moving Tile
+            case 'h':
+                index = 23;
+                break;
+
             default:
                 index = 0;
                 break;
@@ -362,6 +430,11 @@ public class LevelManager {
                 index = 22;
                 break;
 
+            //moving Tile
+            case 'h':
+                index = 23;
+                break;
+
             default:
                 index = 0;
                 break;
@@ -438,6 +511,11 @@ public class LevelManager {
                         case 'f':
                             // Add a fire tile the gameObjects
                             gameObjects.add(new Fire(context, j, i, c, pixelsPerMetre));
+                            break;
+
+                        case 'h':
+                            // Add a moving tile to the gameObjects hovering
+                            gameObjects.add(new movingTile(context, j, i, c, pixelsPerMetre));
                             break;
 
                         case '2':

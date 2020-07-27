@@ -57,10 +57,10 @@ public class PlatformView extends SurfaceView implements Runnable {
         sm.loadSound(context);
         ps = new PlayerState();
 
-        //loadLevel("LevelMountain", 118, 17);
+        loadLevel("LevelMountain", 118, 17);
         //loadLevel("LevelForest", 1, 17);
         //loadLevel("LevelCity", 118, 18);
-        loadLevel("LevelCave", 1, 16);
+        //loadLevel("LevelCave", 1, 16);
 
     }
 
@@ -182,6 +182,7 @@ public class PlatformView extends SurfaceView implements Runnable {
                                 break;
 
                             case 'f':
+                                //hit by fire
                                 sm.playSound("player_burn");
                                 ps.loseLife();
                                 location = new PointF(ps.loadLocation().x, ps.loadLocation().y);

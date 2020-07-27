@@ -6,6 +6,8 @@ public class Fire extends GameObject{
 
     Fire(Context context, float worldStartX, float worldStartY, char type, int pixelsPerMetre) {
 
+        //setTraversable();
+
         final int ANIMATION_FPS = 3;
         final int ANIMATION_FRAME_COUNT = 3;
         final String BITMAP_NAME = "fire";
