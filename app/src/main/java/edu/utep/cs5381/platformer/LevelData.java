@@ -18,6 +18,7 @@ public class LevelData {
     // 5 = Concrete
     // 6 = Scorched
     // 7 = Stone
+    // 8 = Sand
 
     //Active objects
     // g = guard
@@ -31,6 +32,8 @@ public class LevelData {
     //Inactive objects
     // w = tree
     // x = tree2 (snowy)
+    // y = tree3
+    // q = tree4
     // l = lampost
     // r = stalactite
     // s = stalacmite

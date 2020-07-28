@@ -47,6 +47,10 @@ public class LevelManager {
                 levelData = new LevelMountain();
                 break;
 
+            case "LevelDesert":
+                levelData = new LevelDesert();
+                break;
+
         }
 
         // To hold all our GameObjects
@@ -329,6 +333,19 @@ public class LevelManager {
                 index = 24;/////////////////////////////////////////////////////////////
                 break;
 
+            //Sand
+            case '8':
+                index = 25;
+                break;
+
+            case 'y':
+                index = 26;
+                break;
+
+            case 'q':
+                index = 27;
+                break;
+
             default:
                 index = 0;
                 break;
@@ -447,6 +464,19 @@ public class LevelManager {
                 index = 24;///////////////////////////////////////////////////////////////////
                 break;
 
+            //sand
+            case '8':
+                index = 25;
+                break;
+
+            case 'y':
+                index = 26;
+                break;
+
+            case 'q':
+                index = 27;
+                break;
+
             default:
                 index = 0;
                 break;
@@ -558,6 +588,11 @@ public class LevelManager {
                             gameObjects.add(new Stone(j, i, c));
                             break;
 
+                        case '8':
+                            // Add a tile to the gameObjects
+                            gameObjects.add(new Sand(j, i, c));
+                            break;
+
                         case 'v':
                             // Add a destructive tile to the gameObjects
                             gameObjects.add(new Concrete(j, i, c));///////////////////////////////////////////////////////
@@ -573,8 +608,18 @@ public class LevelManager {
                             gameObjects.add(new Tree2(j, i, c));
                             break;
 
-                        case 'l':
+                        case 'y':
                             // Add a tree to the gameObjects
+                            gameObjects.add(new Tree3(j, i, c));
+                            break;
+
+                        case 'q':
+                            // Add a tree2 to the gameObjects
+                            gameObjects.add(new Tree4(j, i, c));
+                            break;
+
+                        case 'l':
+                            // Add a lamp to the gameObjects
                             gameObjects.add(new Lampost(j, i, c));
                             break;
 
@@ -622,5 +667,4 @@ public class LevelManager {
             }
         }
     }
-
 }

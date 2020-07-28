@@ -6,7 +6,7 @@ public class Fire extends GameObject{
 
     Fire(Context context, float worldStartX, float worldStartY, char type, int pixelsPerMetre) {
 
-        //setTraversable();
+        setTraversable();
 
         final int ANIMATION_FPS = 3;
         final int ANIMATION_FRAME_COUNT = 3;

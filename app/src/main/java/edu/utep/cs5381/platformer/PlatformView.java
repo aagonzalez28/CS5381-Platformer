@@ -57,10 +57,11 @@ public class PlatformView extends SurfaceView implements Runnable {
         sm.loadSound(context);
         ps = new PlayerState();
 
-        loadLevel("LevelMountain", 118, 17);
+        //loadLevel("LevelMountain", 118, 17);
         //loadLevel("LevelForest", 1, 17);
         //loadLevel("LevelCity", 118, 18);
         //loadLevel("LevelCave", 1, 16);
+        loadLevel("LevelDesert", 118, 17);
 
     }
 
@@ -293,7 +294,7 @@ public class PlatformView extends SurfaceView implements Runnable {
             // Check if game is over
             if (ps.getLives() == 0) {
                 ps = new PlayerState();
-                loadLevel("LevelCave", 1, 16);
+                loadLevel("LevelForest", 1, 16);
             }
         }
     }
