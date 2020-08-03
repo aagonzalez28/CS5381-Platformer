@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
+import edu.utep.cs5381.platformer.view.Viewport;
+
 public class InputController {
 
     Rect left;
@@ -61,7 +63,7 @@ public class InputController {
     }
 
 
-    public void handleInput(MotionEvent motionEvent,LevelManager l, SoundManager sound, Viewport vp){
+    public void handleInput(MotionEvent motionEvent, LevelManager l, SoundManager sound, Viewport vp){
         int pointerCount = motionEvent.getPointerCount();
 
         for (int i = 0; i < pointerCount; i++) {

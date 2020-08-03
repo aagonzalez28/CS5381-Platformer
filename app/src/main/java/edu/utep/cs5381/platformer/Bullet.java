@@ -7,7 +7,7 @@ public class Bullet  {
     private float xVelocity;
     private int direction;
 
-    Bullet(float x, float y, int speed, int direction){
+    public Bullet(float x, float y, int speed, int direction){
         this.direction = direction;
         this.x = x;
         this.y = y;

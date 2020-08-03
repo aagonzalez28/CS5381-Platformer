@@ -16,6 +16,14 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 
+import edu.utep.cs5381.platformer.gameObject.Drone;
+import edu.utep.cs5381.platformer.gameObject.GameObject;
+import edu.utep.cs5381.platformer.gameObject.RectHitbox;
+import edu.utep.cs5381.platformer.levels.Location;
+import edu.utep.cs5381.platformer.view.Background;
+import edu.utep.cs5381.platformer.view.Teleport;
+import edu.utep.cs5381.platformer.view.Viewport;
+
 public class PlatformView extends SurfaceView implements Runnable {
 
     private boolean debugging = false;

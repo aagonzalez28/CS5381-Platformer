@@ -7,6 +7,42 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import edu.utep.cs5381.platformer.gameObject.Boulders;
+import edu.utep.cs5381.platformer.gameObject.Brick;
+import edu.utep.cs5381.platformer.gameObject.Cart;
+import edu.utep.cs5381.platformer.gameObject.Coal;
+import edu.utep.cs5381.platformer.gameObject.Coin;
+import edu.utep.cs5381.platformer.gameObject.Concrete;
+import edu.utep.cs5381.platformer.gameObject.Drone;
+import edu.utep.cs5381.platformer.gameObject.ExtraLife;
+import edu.utep.cs5381.platformer.gameObject.Fire;
+import edu.utep.cs5381.platformer.gameObject.GameObject;
+import edu.utep.cs5381.platformer.gameObject.Grass;
+import edu.utep.cs5381.platformer.gameObject.Guard;
+import edu.utep.cs5381.platformer.gameObject.Lampost;
+import edu.utep.cs5381.platformer.gameObject.MachineGunUpgrade;
+import edu.utep.cs5381.platformer.gameObject.Player;
+import edu.utep.cs5381.platformer.gameObject.Sand;
+import edu.utep.cs5381.platformer.gameObject.Scorched;
+import edu.utep.cs5381.platformer.gameObject.Snow;
+import edu.utep.cs5381.platformer.gameObject.Stalactite;
+import edu.utep.cs5381.platformer.gameObject.Stalagmite;
+import edu.utep.cs5381.platformer.gameObject.Stone;
+import edu.utep.cs5381.platformer.gameObject.Tree;
+import edu.utep.cs5381.platformer.gameObject.Tree2;
+import edu.utep.cs5381.platformer.gameObject.Tree3;
+import edu.utep.cs5381.platformer.gameObject.Tree4;
+import edu.utep.cs5381.platformer.levels.LevelCave;
+import edu.utep.cs5381.platformer.levels.LevelCity;
+import edu.utep.cs5381.platformer.levels.LevelData;
+import edu.utep.cs5381.platformer.levels.LevelDesert;
+import edu.utep.cs5381.platformer.levels.LevelForest;
+import edu.utep.cs5381.platformer.levels.LevelMountain;
+import edu.utep.cs5381.platformer.gameObject.movingTile;
+import edu.utep.cs5381.platformer.view.Background;
+import edu.utep.cs5381.platformer.view.BackgroundData;
+import edu.utep.cs5381.platformer.view.Teleport;
+
 public class LevelManager {
 
     private String level;
